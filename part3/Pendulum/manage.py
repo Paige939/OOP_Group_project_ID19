@@ -2,6 +2,7 @@ import gymnasium as gym
 import numpy as np
 from abc import ABC, abstractmethod
 from typing import Tuple
+from base_agent import Agent
 
 
 
@@ -60,6 +61,7 @@ class PendulumEnvWrapper:
         """
         return self.current_observation
 
+
 #------Environment Management+ Agent Management-----
 class Experiment:
     """
@@ -96,6 +98,7 @@ class Experiment:
 
     def close(self):
         self.env.close()
+
 
 
 
