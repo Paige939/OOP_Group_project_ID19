@@ -55,6 +55,7 @@ This project implements **deep reinforcement learning agents** to solve the Pend
 ---
 
 ## Project Structure
+重複部分為有括號標示(威廷)之檔案
 
 ```
 Pendulum/
