@@ -25,7 +25,7 @@ _You can add any other _agent.py (ex: some algorithm implementation) into Agents
 # Installation
 
 
-# Part 3: Pendulum Control with Deep Reinforcement Learning
+# Part 3: Pendulum Control with Deep Reinforcement Learning 的部分(威廷)
 
 ## Project Overview
 
@@ -56,7 +56,6 @@ This project implements **deep reinforcement learning agents** to solve the Pend
 
 ## Project Structure
 重複部分為有括號標示(威廷)之檔案
-
 ```
 Pendulum/
 ├── base_agent.py          # Abstract Agent base class (Inheritance)
