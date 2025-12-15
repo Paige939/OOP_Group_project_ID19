@@ -149,6 +149,43 @@ TD3 是 DDPG 的改進版本，解決了 Q 值**過度估計**的問題，有三
 
 - 這個過程會讓機率分佈快速地收斂到最佳策略參數的極小區域。
 
+## Classical Control Algorithms (Physics-based)
+
+除了強化學習 (RL) 方法，我們也實作了基於物理模型的經典控制演算法，作為與 RL Agent 的對照組。這些方法不需要訓練神經網路，而是直接利用物理公式進行控制。
+
+### 1. Energy Shaping Control (能量控制)
+能量控制的核心概念是利用能量守恆定律。我們計算單擺目前的總能量，並與「直立靜止時的目標能量」進行比較，透過施加力矩來注入或移除能量。
+
+- **原理**：
+  - 單擺總能量 $E = \frac{1}{2}ml^2 \dot{\theta}^2 + mgl(\cos\theta - 1)$
+  - 目標能量 $E_{target}$ 為直立靜止時的能量 (設為 0)
+- **控制律**：
+  - $u = -k_E \cdot \dot{\theta} \cdot (E - E_{target})$
+  - 當能量不足時 ($E < E_{target}$)，順著速度方向推一把 (起擺)。
+  - 當能量過多時 ($E > E_{target}$)，逆著速度方向阻擋 (煞車)。
+- **特點**：非常擅長將單擺從底部甩至高點，但在最高點難以精確穩定。
+
+### 2. LQR (Linear Quadratic Regulator)
+LQR 是一種最佳控制策略，適用於線性系統。
+
+- **線性化 (Linearization)**：
+  - 在單擺直立平衡點 ($\theta \approx 0$) 將非線性物理方程線性化為 $\dot{x} = Ax + Bu$。
+  - $A$ 矩陣代表重力與慣性對狀態的影響，$B$ 矩陣代表力矩輸入的影響。
+- **最佳化目標**：
+  - 定義狀態懲罰矩陣 $Q$ (重視角度誤差) 與控制懲罰矩陣 $R$ (重視省力)。
+  - 解 Riccati 方程 (ARE) 算出最佳增益矩陣 $K$。
+- **控制律**：
+  - $u = -K \cdot x = -(k_1 \theta + k_2 \dot{\theta})$
+- **特點**：在平衡點附近極度穩定且節能，但無法處理大幅度的起擺動作，難以從底部往上擺至最高點。
+
+### 3. Hybrid Control (Energy + LQR)
+結合了上述兩種方法的優點，形成一套完整的控制策略。
+
+- **策略切換邏輯**：
+  1. **Swing-up 階段**：當角度偏差較大時 (如 $|\theta| > 0.5$ rad)，使用 **Energy Shaping** 快速累積能量甩至高點。
+  2. **Balancing 階段**：當單擺進入直立點附近時 (如 $|\theta| \le 0.5$ rad)，切換至 **LQR** 進行精確穩壓。
+- **優勢**：結合了能量控制的廣域性與 LQR 的局部精確性，通常能獲得穩定且接近理論最佳值的效能。
+
 # How to Run
 ### 1. Setup Environment
 
@@ -221,4 +258,4 @@ pip install pygame
 |-----------------|------------------|
 | 謝佩均 (B123245004) | Part3 整體專案架構及其OOP實作、Cross Entropy Method實作 & CEM部分reflection, readme, demo slide |
 |  江威廷 (B123245021)   | part 3 DDPG & TD3 實作 & reflection paper & readme & demo slide，問題定義   |
-|   黃柏薰  (B123040046)    |    Part3 lqr & energyControl $ 組合Agent 實作  |
+|   黃柏薰  (B123040046)    |    Part3 lqr & energyControl & 組合Agent 實作  |
