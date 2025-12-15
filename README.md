@@ -18,6 +18,8 @@ project/
     ├── manage.py
     ├── neural_networks.py
     ├── replay_buffer.py
+    ├── test_main.py
+    ├── train_main.py 
     └── main.py
 ```
 ## PART 1
@@ -35,8 +37,11 @@ A frozen lake game to enhance its consistent success rate > 0.7.
 
 ### Pendulum Control with Cross Entropy Method
 
+The goal is to find the optimal set of weights for a linear policy that maximizes the cumulative reward in the Pendulum environment for swinging the pendulum up and keeping it balance.
+The agent uses a simple linear equation to determine the action (torque) based on the state:$$\text{Action} = W \cdot \text{Features}$$Features: The observation is augmented with a bias term: $[\cos(\theta), \sin(\theta), \dot{\theta}, 1]$.$W$: A $1 \times 4$ weight matrix that the CEM algorithm learns.
+
+
 ### Pendulum Control with Deep Reinforcement Learning (威廷)
-#### Overview
 
 This project implements **deep reinforcement learning agents** to solve the Pendulum-v1 control problem from OpenAI Gymnasium. The goal is to swing up and balance an inverted pendulum using continuous torque control.
 
@@ -164,13 +169,8 @@ TD3 是 DDPG 的改進版本，解決了 Q 值**過度估計**的問題，有三
    - 讓策略對動作的微小變化更穩健
 
 
----
-
 
 # How to Run
-## PART 1
-## PART 2
-## PART 3
 ### 1. Setup Environment
 
 ```bash
@@ -220,7 +220,6 @@ python test_main.py --compare           # num_test_episodes = 5
 python main.py
 ```
 
----
 
 # Dependencies
 
@@ -230,10 +229,12 @@ python main.py
 | matplotlib | ≥3.5.0 | Plotting training curves |
 | gymnasium | ≥0.29.0 | Reinforcement learning environments |
 | torch | ≥2.0.0 | Deep learning framework (PyTorch) |
+| pygame | 2.6.1 | Render (Visualization) |
 
 Install all dependencies:
 ```bash
 pip install numpy matplotlib gymnasium torch
+pip install pygame
 ```
 
 ---
