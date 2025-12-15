@@ -219,6 +219,6 @@ pip install pygame
 # Contribution List
 | **Member Name** | **Contribution** |
 |-----------------|------------------|
-| 謝佩均 (B123245004) | 整體專案架構及其OOP實作、Cross Entropy Method實作 |
-|                     |                                                          |
-|                     |                                                          |
+| 謝佩均 (B123245004) | Part3 整體專案架構及其OOP實作、Cross Entropy Method實作 & CEM部分reflection, readme, demo slide |
+|  江威廷 (B123245021)   | part 3 DDPG & TD3 實作 & reflection paper & readme & demo slide，問題定義   |
+|   黃柏勳  (B123040046)    |    Part3 lqr & energy 實作  |
