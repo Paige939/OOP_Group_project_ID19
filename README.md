@@ -229,7 +229,7 @@ python test_main.py --agent TD3 --model results/TD3/best_model.pth --episodes 10
 python test_main.py --compare           # num_test_episodes = 5
 ```
 
-### 4. Quick Demo
+### 4. Other Demo
 
 ```bash
 # Run RandomAgent, CEM_Agent, EnergyControlAgent, LQRAgent, and ELAgent(Hybrid) demo
