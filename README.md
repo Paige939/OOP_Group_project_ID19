@@ -8,7 +8,12 @@ project/
     ├── agents/
     │   ├── __init__.py
     │   ├── random_agent.py
-    │   └── other_agent.py (you can add new agent.py here)
+    |   ├── CEM_agent.py
+    |   ├── DDPG_agent.py
+    |   ├── TD3_agent.py
+    |   ├── energy_agent.py
+    |   ├── energyz_lqr_agent.py
+    │   └── lqr_agent.py
     ├── base_agent.py
     ├── manage.py
     └── main.py
