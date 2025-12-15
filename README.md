@@ -104,7 +104,7 @@ After training, results are saved in `results/{AGENT}/`:
 | Random | -1200 ~ -1500 | N/A |
 | DDPG (100 ep) | -300 ~ -600 | ~10 min |
 | TD3 (100 ep) | -200 ~ -400 | ~10 min |
-|| CEM (100 ep_len, 5 ep_num |         |       |
+| CEM (100 ep_len, 5 ep_num) | -200~-1500(Linear so Vary highly)    |       |
 > **Note**: Closer to 0 = better performance
 
 # 演算法說明
