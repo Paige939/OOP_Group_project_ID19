@@ -186,7 +186,7 @@ LQR 是一種最佳控制策略，適用於線性系統。
   2. **Balancing 階段**：當單擺進入直立點附近時 (如 $|\theta| \le 0.5$ rad)，切換至 **LQR** 進行精確穩壓。
 - **優勢**：結合了能量控制的廣域性與 LQR 的局部精確性，通常能獲得穩定且接近理論最佳值的效能。
 
-# How to Run
+# How to Run (DDPG & TD3 by 威廷)
 ### 1. Setup Environment
 
 ```bash
@@ -194,7 +194,7 @@ LQR 是一種最佳控制策略，適用於線性系統。
 python -m venv venv         #只有第一次要
 
 # Activate (Linux/WSL)
-source .venv/bin/activate
+source venv/bin/activate
 
 # Activate (Windows)
 .\venv\Scripts\activate
