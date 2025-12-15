@@ -62,7 +62,7 @@ This project implements **deep reinforcement learning agents** to solve the Pend
 
 After training, results are saved in `results/{AGENT}/`:
 
-#### 生成檔案說明
+**生成檔案說明**
 
 | 檔案 | 說明 |
 |------|------|
@@ -72,7 +72,7 @@ After training, results are saved in `results/{AGENT}/`:
 | `training_curves.png` | **訓練曲線圖**：視覺化訓練過程（詳見下方說明）|
 | `training_data.npz` | **原始訓練數據**：包含每個 episode 的獎勵和損失值，可用於自行繪圖分析 |
 
-#### 訓練曲線圖解讀 (training_curves.png)
+**訓練曲線圖解讀 (training_curves.png)**
 
 訓練曲線包含 4 個子圖：
 
@@ -104,9 +104,8 @@ After training, results are saved in `results/{AGENT}/`:
 | Random | -1200 ~ -1500 | N/A |
 | DDPG (100 ep) | -300 ~ -600 | ~10 min |
 | TD3 (100 ep) | -200 ~ -400 | ~10 min |
-
+|| CEM (100 ep_len, 5 ep_num |         |       |
 > **Note**: Closer to 0 = better performance
-
 
 # 演算法說明
 
