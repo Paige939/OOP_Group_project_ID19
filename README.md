@@ -38,7 +38,9 @@ A frozen lake game to enhance its consistent success rate > 0.7.
 ### Pendulum Control with Cross Entropy Method
 
 The goal is to find the optimal set of weights for a linear policy that maximizes the cumulative reward in the Pendulum environment for swinging the pendulum up and keeping it balance.
-The agent uses a simple linear equation to determine the action (torque) based on the state:$$\text{Action} = W \cdot \text{Features}$$Features: The observation is augmented with a bias term: $[\cos(\theta), \sin(\theta), \dot{\theta}, 1]$.$W$: A $1 \times 4$ weight matrix that the CEM algorithm learns.
+The agent uses a simple linear equation to determine the action (torque) based on the state: $$\text{Action} = W \cdot \text{Features}$$ 
+* Features: The observation is augmented with a bias term: $[\cos(\theta), \sin(\theta), \dot{\theta}, 1]$.
+* $W$: A $1 \times 4$ weight matrix that the CEM algorithm learns.
 
 
 ### Pendulum Control with Deep Reinforcement Learning (威廷)
