@@ -154,7 +154,7 @@ TD3 是 DDPG 的改進版本，解決了 Q 值**過度估計**的問題，有三
 python -m venv venv         #只有第一次要
 
 # Activate (Linux/WSL)
-source venv/bin/activate
+source .venv/bin/activate
 
 # Activate (Windows)
 .\venv\Scripts\activate
