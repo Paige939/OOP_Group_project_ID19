@@ -4,4 +4,4 @@ from .energy_agent import EnergyControlAgent
 from .lqr_agent import LQRAgent
 from .energy_lqr_agent import ELAgent
 
-__all__=["RandomAgent", "CEM_Agent", "EnergyControlAgent", "LQRAgent", "ELgent"]
+__all__=["RandomAgent", "CEM_Agent", "EnergyControlAgent", "LQRAgent", "ELAgent"]
