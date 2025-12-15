@@ -6,19 +6,20 @@
 classDiagram
     direction TB
     
-    %% Abstract Base Class
+    %% ===== Abstract Base Class =====
     class Agent {
-        &lt;&lt;abstract&gt;&gt;
+        <<abstract>>
         +action: int
         +max_action: float
         +__init__(action, max_action)
         +act(observation)* np.ndarray
         +reset()*
+        +pre_episode(env, episode_len)
     }
     
-    %% Concrete Agents
+    %% ===== Concrete Agents =====
     class RandomAgent {
-        +act(observation, add_noise) np.ndarray
+        +act(observation) np.ndarray
         +reset()
     }
     
@@ -31,10 +32,14 @@ classDiagram
         -replay_buffer: ReplayBuffer
         -gamma: float
         -tau: float
+        -batch_size: int
+        -exploration_noise: float
+        -training_mode: bool
         +act(observation, add_noise) np.ndarray
         +reset()
-        +store_transition(s, a, r, s', done)
-        +train_step() Tuple
+        +store_transition(state, action, reward, next_state, done)
+        +train_step() Tuple[float, float]
+        +set_training_mode(mode)
         +save(filepath)
         +load(filepath)
         -_soft_update(source, target)
@@ -50,16 +55,57 @@ classDiagram
         -policy_delay: int
         -policy_noise: float
         -noise_clip: float
+        -total_iterations: int
         +act(observation, add_noise) np.ndarray
         +reset()
-        +store_transition(s, a, r, s', done)
-        +train_step() Tuple
+        +store_transition(state, action, reward, next_state, done)
+        +train_step() Tuple[float, float]
+        +set_training_mode(mode)
         +save(filepath)
         +load(filepath)
         -_soft_update(source, target)
     }
     
-    %% Neural Networks
+    class CEM_Agent {
+        -num_samples: int
+        -elite_frac: float
+        -num_elite: int
+        -weights_mean: np.ndarray
+        -weights_std: np.ndarray
+        -best_weights: np.ndarray
+        -save_path: str
+        +act(observation) np.ndarray
+        +reset()
+        +pre_episode(env, episode_len)
+        -evaluate(env, weights, episode_len) float
+    }
+    
+    class LQRAgent {
+        -K: np.ndarray
+        -g: float
+        -m: float
+        -l: float
+        +act(observation) np.ndarray
+        +reset()
+    }
+    
+    class EnergyControlAgent {
+        -g: float
+        -m: float
+        -l: float
+        +act(observation) np.ndarray
+        +reset()
+        +get_energy(cos_th, sin_th, th_dot) float
+    }
+    
+    class ELAgent {
+        -swing_up_agent: EnergyControlAgent
+        -balance_agent: LQRAgent
+        +act(observation) np.ndarray
+        +reset()
+    }
+    
+    %% ===== Neural Networks (nn.Module) =====
     class ActorNetwork {
         -max_action: float
         -hidden: nn.Sequential
@@ -82,7 +128,7 @@ classDiagram
         +Q1(state, action) torch.Tensor
     }
     
-    %% Buffer
+    %% ===== Replay Buffer =====
     class ReplayBuffer {
         -capacity: int
         -ptr: int
@@ -92,18 +138,18 @@ classDiagram
         -rewards: np.ndarray
         -next_states: np.ndarray
         -dones: np.ndarray
-        +store(s, a, r, s', done)
+        +store(state, action, reward, next_state, done)
         +sample(batch_size) Dict
         +__len__() int
     }
     
-    %% Environment
+    %% ===== Environment Wrapper =====
     class PendulumEnvWrapper {
         -env: gym.Env
+        -current_observation: np.ndarray
         +state: int
         +action: int
         +max_action: float
-        -current_observation: np.ndarray
         +reset() np.ndarray
         +step(action) Tuple
         +render()
@@ -111,33 +157,43 @@ classDiagram
         +get_state() np.ndarray
     }
     
-    %% Experiment Manager
+    %% ===== Experiment Manager =====
     class Experiment {
         -env: PendulumEnvWrapper
         -agent: Agent
         -episode_len: int
         +run_episode(render) float
-        +train_episode() Tuple
         +close()
     }
     
-    %% Inheritance
-    Agent <|-- RandomAgent
-    Agent <|-- DDPG_Agent
-    Agent <|-- TD3_Agent
+    %% ========== Relationships ==========
     
-    %% Composition
-    DDPG_Agent *-- ActorNetwork
-    DDPG_Agent *-- CriticNetwork
-    DDPG_Agent *-- ReplayBuffer
+    %% Inheritance (繼承)
+    Agent <|-- RandomAgent : extends
+    Agent <|-- DDPG_Agent : extends
+    Agent <|-- TD3_Agent : extends
+    Agent <|-- CEM_Agent : extends
+    Agent <|-- LQRAgent : extends
+    Agent <|-- EnergyControlAgent : extends
+    Agent <|-- ELAgent : extends
     
-    TD3_Agent *-- ActorNetwork
-    TD3_Agent *-- TwinCriticNetwork
-    TD3_Agent *-- ReplayBuffer
+    %% Composition (組合) - DDPG
+    DDPG_Agent *-- ActorNetwork : actor
+    DDPG_Agent *-- CriticNetwork : critic
+    DDPG_Agent *-- ReplayBuffer : buffer
     
-    %% Association
-    Experiment o-- PendulumEnvWrapper
-    Experiment o-- Agent
+    %% Composition (組合) - TD3
+    TD3_Agent *-- ActorNetwork : actor
+    TD3_Agent *-- TwinCriticNetwork : twin_critic
+    TD3_Agent *-- ReplayBuffer : buffer
+    
+    %% Composition (組合) - ELAgent (混合策略)
+    ELAgent *-- EnergyControlAgent : swing_up
+    ELAgent *-- LQRAgent : balance
+    
+    %% Aggregation (聚合) - Experiment
+    Experiment o-- PendulumEnvWrapper : env
+    Experiment o-- Agent : agent
 ```
 
 ---
