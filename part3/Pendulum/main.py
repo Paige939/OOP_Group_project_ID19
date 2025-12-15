@@ -7,6 +7,20 @@ if __name__ == "__main__":
     episode_len = 200
     n_episodes = 5
 
+
+    # --- Random Agent ---
+    #create environment for Random
+    rand_env_wrapper = PendulumEnvWrapper(render_mode=None) 
+    random_agent = RandomAgent(action=rand_env_wrapper.action, max_action=rand_env_wrapper.max_action)
+    exper_rand = Experiment(rand_env_wrapper, random_agent, episode_len)
+    rand_rewards = []
+    print("\n=== Random Agent ===")
+    for ep in range(n_episodes):
+        reward = exper_rand.run_episode(render=False)
+        rand_rewards.append(reward)
+        print(f"Episode {ep+1} total reward: {reward:.2f}")
+        
+
     # --- CEM Agent ---
     # create environmemt for CEM
     cem_env_wrapper = PendulumEnvWrapper(render_mode=None) 
@@ -20,19 +34,7 @@ if __name__ == "__main__":
         cem_rewards.append(reward)
         print(f"Episode {ep+1} total reward: {reward:.2f}")
 
-    # --- Random Agent ---
-    #create environment for Random
-    rand_env_wrapper = PendulumEnvWrapper(render_mode=None) 
-    random_agent = RandomAgent(action=rand_env_wrapper.action, max_action=rand_env_wrapper.max_action)
-    exper_rand = Experiment(rand_env_wrapper, random_agent, episode_len)
-    rand_rewards = []
-    print("\n=== Random Agent ===")
-    for ep in range(n_episodes):
-        reward = exper_rand.run_episode(render=False)
-        rand_rewards.append(reward)
-        print(f"Episode {ep+1} total reward: {reward:.2f}")
-
-
+    
     # --- Energy Agent ---
     #create environment for EnergyControl
     energy_env = PendulumEnvWrapper(render_mode=None)
