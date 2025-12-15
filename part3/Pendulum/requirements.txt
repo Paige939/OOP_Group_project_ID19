@@ -1,0 +1,10 @@
+# Core dependencies for Pendulum RL project
+numpy>=1.21.0
+matplotlib>=3.5.0
+gymnasium>=0.29.0
+scipy
+
+# PyTorch CPU version (smaller and faster to install)
+# For GPU version, remove the --extra-index-url line and use: pip install torch
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
