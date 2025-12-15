@@ -223,11 +223,15 @@ python train_main.py --agent TD3 --episodes 20 --warmup 500
 ### 3. Testing
 
 ```bash
-# Test with visualization
+# Test TD3 with visualization
 python test_main.py --agent TD3 --model results/TD3/best_model.pth --episodes 5
+
+# Test DDPG with visualization
+python test_main.py --agent DDPG --model results/DDPG/best_model.pth --episodes 5
 
 # Test without visualization (faster)
 python test_main.py --agent TD3 --model results/TD3/best_model.pth --episodes 10 --no-render
+python test_main.py --agent DDPG --model results/DDPG/best_model.pth --episodes 10 --no-render
 
 # Compare all agents (Random vs DDPG vs TD3) - demonstrates Polymorphism
 python test_main.py --compare           # num_test_episodes = 5
