@@ -219,6 +219,6 @@ pip install pygame
 # Contribution List
 | **Member Name** | **Contribution** |
 |-----------------|------------------|
-| 謝佩均 (B123245004) | **Part3** 整體專案架構及其OOP實作、Cross Entropy Method實作 |
+| 謝佩均 (B123245004) | 整體專案架構及其OOP實作、Cross Entropy Method實作 |
 |                     |                                                          |
 |                     |                                                          |
