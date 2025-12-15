@@ -101,13 +101,13 @@ After training, results are saved in `results/{AGENT}/`:
 - **預期變化**：應該趨於穩定（不一定會下降）
 
 ### Performance Benchmarks
-
-| Agent | Typical Reward |
-|-------|---------------|
-| Random | -1200 ~ -1500 | 
-| DDPG (100 ep) | -300 ~ -600 |
-| TD3 (100 ep) | -200 ~ -400 | 
-| CEM (100 ep_len, 5 ep_num) | -200~-1500(Linear so Vary highly)    |
+Training: 100 episodes, Test: 5 episods
+| Agent  | Mean RewardMax         | Reward   | Min Reward  | Explanation                         |
+|:------ |:-----------------------:|---------:|------------:|:------------------------------------|
+| Random | -1188.38 ± 291.14       | -751.38  | -1651.14    | 完全隨機，無法控制                   |
+| DDPG   | -231.29 ± 64.79         | -125.10  | -328.81     | 有學習效果                           |
+| TD3    | -167.90 ± 56.37         | -117.80  | -245.44     | 最佳表現                             |
+| CEM    | -200 ~ -1500（Linear）  | —        | —           | Linear vary highly（變動很大）     |
 > **Note**: Closer to 0 = better performance
 
 **Random/ CEM/ LQR/ Energy/ Energy+LQR Comparison**
