@@ -110,6 +110,9 @@ After training, results are saved in `results/{AGENT}/`:
 | CEM (100 ep_len, 5 ep_num) | -200~-1500(Linear so Vary highly)    |
 > **Note**: Closer to 0 = better performance
 
+Random/ CEM/ LQR/ Energy/ Energy+LQR
+<img width="1111" height="704" alt="image" src="https://github.com/user-attachments/assets/16d7bacf-d9db-4f7e-97ea-c0f396b3b9e9" />
+
 # 演算法說明
 
 ## DDPG (Deep Deterministic Policy Gradient)
