@@ -53,11 +53,12 @@ class DDPG_Agent(Agent):
         super().__init__(action, max_action)
         
         # 設定裝置
-        if device is None:
-            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        else:
+        if device is None:  # 自動選擇裝置
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+        else:   # 使用指定裝置
             self.device = torch.device(device)
         
+        """ 這裡就是把變數初始化 """
         self.state_dim = state_dim
         self.action_dim = action
         self.gamma = gamma
