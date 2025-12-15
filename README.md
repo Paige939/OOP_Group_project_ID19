@@ -16,6 +16,8 @@ project/
     │   └── lqr_agent.py
     ├── base_agent.py
     ├── manage.py
+    ├── neural_networks.py
+    ├── replay_buffer.py
     └── main.py
 ```
 ## PART 1
