@@ -1,5 +1,5 @@
 from manage import PendulumEnvWrapper, Experiment
-from Agents import RandomAgent, CEM_Agent
+from Agents import RandomAgent, CEM_Agent, EnergyControlAgent, LQRAgent, ELAgent
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
@@ -32,16 +32,63 @@ if __name__ == "__main__":
         rand_rewards.append(reward)
         print(f"Episode {ep+1} total reward: {reward:.2f}")
 
+
+    # --- Energy Agent ---
+    #create environment for EnergyControl
+    energy_env = PendulumEnvWrapper(render_mode=None)
+    energy_agent = EnergyControlAgent(action_dim=energy_env.action, max_action=energy_env.max_action)
+    exper_energy = Experiment(energy_env, energy_agent, episode_len)
+    energy_rewards = []
+    print("\n=== Energy Control Agent ===")
+    for ep in range(n_episodes):
+        reward = exper_energy.run_episode(render=False)
+        energy_rewards.append(reward)
+        print(f"Episode {ep+1} total reward: {reward:.2f}")
+    
+    energy_env.close()
+
+    # --- LQR Agent ---
+    #create environment for LQR
+    lqr_env = PendulumEnvWrapper(render_mode=None)
+    lqr_agent = LQRAgent(action_dim=lqr_env.action, max_action=lqr_env.max_action)
+    exper_lqr = Experiment(lqr_env, lqr_agent, episode_len)
+    lqr_rewards = []
+    print("\n=== LQR Agent (Expected to fail if starts at bottom) ===")
+    for ep in range(n_episodes):
+        reward = exper_lqr.run_episode(render=False)
+        lqr_rewards.append(reward)
+        print(f"Episode {ep+1} total reward: {reward:.2f}")
+    lqr_env.close()
+
+    # --- Energy + LQR Agent ---
+    #create environment for EL
+    el_env = PendulumEnvWrapper(render_mode=None)
+    el_agent = ELAgent(action_dim=el_env.action, max_action=el_env.max_action)
+    exper_el = Experiment(el_env, el_agent, episode_len)
+    el_rewards = []
+    print("\n=== EL Agent (Hybrid) ===")
+    for ep in range(n_episodes):
+        reward = exper_el.run_episode(render=False)
+        el_rewards.append(reward)
+        print(f"Episode {ep+1} total reward: {reward:.2f}")
+    el_env.close()
+
+
+
     cem_env_wrapper.close()
     rand_env_wrapper.close() # close all environments
 
     # --- Plot comparison ---
-    plt.figure(figsize=(8,5))
+    #plt.figure(figsize=(8,5))
+    plt.figure(figsize=(10,6))
     plt.plot(range(1,n_episodes+1), cem_rewards, 'o-', label='CEM Agent')
     plt.plot(range(1,n_episodes+1), rand_rewards, 's-', label='Random Agent')
+    plt.plot(range(1,n_episodes+1), energy_rewards, 'x--', label='Energy Only')
+    plt.plot(range(1,n_episodes+1), lqr_rewards, 'v:', label='LQR Only')
+    plt.plot(range(1,n_episodes+1), el_rewards, '^-', label='EL Agent', linewidth=2.5)
     plt.xlabel("Episode")
     plt.ylabel("Total Reward")
-    plt.title("CEM vs Random Agent on Pendulum-v1")
+    plt.title(" Agent on Pendulum-v1")
     plt.legend()
     plt.grid(True)
     plt.savefig("Comparison.png")
