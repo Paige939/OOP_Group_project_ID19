@@ -1,71 +1,5 @@
 # Project Overview
-```
-project/
-├── part1
-├── part2
-│   └── frozen_lake.py
-└── part3
-    ├── agents/
-    │   ├── __init__.py
-    │   ├── random_agent.py
-    |   ├── CEM_agent.py
-    |   ├── DDPG_agent.py
-    |   ├── TD3_agent.py
-    |   ├── energy_agent.py
-    |   ├── energyz_lqr_agent.py
-    │   └── lqr_agent.py
-    ├── base_agent.py
-    ├── manage.py
-    ├── neural_networks.py
-    ├── replay_buffer.py
-    ├── test_main.py
-    ├── train_main.py 
-    └── main.py
-```
-## PART 1
-A mountain car game to test if the installation is success.
-## PART 2
-A frozen lake game to enhance its consistent success rate > 0.7.
-## PART 3
-### Overall Structure for Pendulum
-
-#### What is Pendulum?
-- **State**: 3D vector (`cos(θ)`, `sin(θ)`, `θ̇`) representing the pendulum angle and angular velocity
-- **Action**: Continuous torque ∈ [-2, +2]
-- **Objective**: Keep the pendulum upright (θ = 0) with minimum effort
-- **Reward**: Ranges from -16.28 to 0, higher (closer to 0) is better
-
-### Pendulum Control with Cross Entropy Method
-
-The goal is to find the optimal set of weights for a linear policy that maximizes the cumulative reward in the Pendulum environment for swinging the pendulum up and keeping it balance.
-The agent uses a simple linear equation to determine the action (torque) based on the state: $$\text{Action} = W \cdot \text{Features}$$ 
-* Features: The observation is augmented with a bias term: $[\cos(\theta), \sin(\theta), \dot{\theta}, 1]$.
-* $W$: A $1 \times 4$ weight matrix that the CEM algorithm learns.
-
-
-### Pendulum Control with Deep Reinforcement Learning (威廷)
-
-This project implements **deep reinforcement learning agents** to solve the Pendulum-v1 control problem from OpenAI Gymnasium. The goal is to swing up and balance an inverted pendulum using continuous torque control.
-
-#### Implemented Agents
-
-| Agent | Description |
-|-------|-------------|
-| **RandomAgent** | Baseline agent with random actions |
-| **DDPG** | Deep Deterministic Policy Gradient - Actor-Critic for continuous control |
-| **TD3** | Twin Delayed DDPG - Improved version with three key enhancements |
-
-#### OOP Principles Demonstrated
-
-1. **Inheritance**: `DDPG_Agent` and `TD3_Agent` inherit from abstract `Agent` base class
-2. **Polymorphism**: All agents share the same interface (`act()`, `reset()`), allowing interchangeable use
-3. **Encapsulation**: Environment logic wrapped in `PendulumEnvWrapper`, neural networks encapsulated in separate modules
-4. **Abstraction**: `Agent` base class defines abstract interface, hiding implementation details
-
----
-
-#### Project Structure
-重複部分為有括號標示(威廷)之檔案
+## Project Structure
 ```
 Pendulum/
 ├── base_agent.py          # Abstract Agent base class (Inheritance)
@@ -76,11 +10,15 @@ Pendulum/
 ├── Agents/
 │   ├── random_agent.py    # Random baseline agent
 │   ├── DDPG_agent.py      # DDPG implementation
-│   └── TD3_agent.py       # TD3 implementation
+|   ├── TD3_agent.py       # TD3 implementation
+|   ├── energy_agent.py    # Energy implementation
+|   ├── energy_lqr_agent.py
+|   ├── lqr_agent.py
+│   └── CEM_agent.py       # CEM implementation
 │
 ├── train_main.py          # Training script
 ├── test_main.py           # Testing & comparison script
-├── main.py                # Simple demo with RandomAgent
+├── main.py                # Simple demo with RandomAgent, CEM_agent
 │
 ├── results/               # Trained models & curves
 │   ├── TD3/
@@ -88,6 +26,37 @@ Pendulum/
 │
 └── requirements.txt       # Dependencies
 ```
+## PART 1
+A mountain car game to test if the installation is success.
+## PART 2
+A frozen lake game to enhance its consistent success rate > 0.7.
+## PART 3
+### What is Pendulum?
+- **State**: 3D vector (`cos(θ)`, `sin(θ)`, `θ̇`) representing the pendulum angle and angular velocity
+- **Action**: Continuous torque ∈ [-2, +2]
+- **Objective**: Keep the pendulum upright (θ = 0) with minimum effort
+- **Reward**: Ranges from -16.28 to 0, higher (closer to 0) is better
+
+### Pendulum Control with Deep Reinforcement Learning 
+
+This project implements **deep reinforcement learning agents** to solve the Pendulum-v1 control problem from OpenAI Gymnasium. The goal is to swing up and balance an inverted pendulum using continuous torque control.
+
+#### Implemented Agents
+
+| Agent | Description |
+|-------|-------------|
+| **RandomAgent** | Baseline agent with random actions |
+| **DDPG** | Deep Deterministic Policy Gradient - Actor-Critic for continuous control |
+| **TD3** | Twin Delayed DDPG - Improved version with three key enhancements |
+| **CEM** | Cross Entropy Method - Find the optimal set of weights for a linear policy that maximizes the cumulative reward in the Pendulum environment|
+
+#### OOP Principles Demonstrated
+
+1. **Inheritance**: `DDPG_Agent` , `CEM_agent` and `TD3_Agent` inherit from abstract `Agent` base class
+2. **Polymorphism**: All agents share the same interface (`act()`, `reset()`), allowing interchangeable use
+3. **Encapsulation**: Environment logic wrapped in `PendulumEnvWrapper`, neural networks encapsulated in separate modules
+4. **Abstraction**: `Agent` base class defines abstract interface, hiding implementation details
+
 
 #### Training Results Explanation
 
@@ -138,7 +107,6 @@ After training, results are saved in `results/{AGENT}/`:
 
 > **Note**: Closer to 0 = better performance
 
----
 
 # 演算法說明
 
@@ -170,7 +138,13 @@ TD3 是 DDPG 的改進版本，解決了 Q 值**過度估計**的問題，有三
    - 在目標動作上加入裁剪過的噪聲
    - 讓策略對動作的微小變化更穩健
 
-
+## CEM (Cross Entropy Method)
+- CEM 是一種隨機優化算法，最初用於罕見事件的機率估算，後來被廣泛應用於連續或離散空間的優化問題，包括強化學習中的策略參數優化。
+- CEM 並不是直接優化單一的策略參數 $W$，而是優化一個參數的機率分佈（在程式碼中是高斯分佈 $\mathcal{N}(\mu, \sigma)$）。其基本思想是：
+    1. 假設：最佳的策略參數 $W^*$ 落在當前機率分佈的 高密度區域 內。
+    2. 方法：在每次迭代中，我們採樣許多策略，然後只選擇表現最好的 精英樣本 (Elite Samples)。
+    3. 調整：根據這些精英樣本，我們調整機率分佈的參數（$\mu$ 和 $\sigma$），使分佈的中心（$\mu$）向精英的平均值移動，並且分佈的範圍（$\sigma$）縮小。
+    這個過程會讓機率分佈快速地收斂到最佳策略參數的極小區域。
 
 # How to Run
 ### 1. Setup Environment
@@ -239,7 +213,6 @@ pip install numpy matplotlib gymnasium torch
 pip install pygame
 ```
 
----
 # Contribution List
 
 
