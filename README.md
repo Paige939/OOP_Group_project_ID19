@@ -232,7 +232,7 @@ python test_main.py --compare           # num_test_episodes = 5
 ### 4. Quick Demo
 
 ```bash
-# Run RandomAgent, CEM_Agent, EnergyControlAgent, LQRAgent, and ELAgent demo
+# Run RandomAgent, CEM_Agent, EnergyControlAgent, LQRAgent, and ELAgent(Hybrid) demo
 python main.py
 ```
 
