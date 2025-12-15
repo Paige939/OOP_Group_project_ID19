@@ -1,30 +1,33 @@
 # Project Overview
 ## Project Structure
 ```
-Pendulum/
-├── base_agent.py          # Abstract Agent base class (Inheritance)
-├── manage.py              # Environment wrapper & Experiment manager (Encapsulation)
-├── neural_networks.py     # Actor/Critic neural networks
-├── replay_buffer.py       # Experience replay buffer
-│
-├── Agents/
-│   ├── random_agent.py    # Random baseline agent
-│   ├── DDPG_agent.py      # DDPG implementation
-|   ├── TD3_agent.py       # TD3 implementation
-|   ├── energy_agent.py    # Energy implementation
-|   ├── energy_lqr_agent.py
-|   ├── lqr_agent.py
-│   └── CEM_agent.py       # CEM implementation
-│
-├── train_main.py          # Training script
-├── test_main.py           # Testing & comparison script
-├── main.py                # Simple demo with RandomAgent, CEM_agent
-│
-├── results/               # Trained models & curves
-│   ├── TD3/
-│   └── DDPG/
-│
-└── requirements.txt       # Dependencies
+project
+├── part1
+├── part2
+|   └──  frozen_lake.py
+|
+└── part3/Pendulum/
+          ├── base_agent.py          # Abstract Agent base class (Inheritance)
+          ├── manage.py              # Environment wrapper & Experiment manager (Encapsulation)
+          ├── neural_networks.py     # Actor/Critic neural networks
+          ├── replay_buffer.py       # Experience replay buffer
+          ├── Agents/
+          │   ├── random_agent.py    # Random baseline agent
+          │   ├── DDPG_agent.py      # DDPG implementation
+          |   ├── TD3_agent.py       # TD3 implementation
+          |   ├── energy_agent.py    # Energy implementation
+          |   ├── energy_lqr_agent.py
+          |   ├── lqr_agent.py
+          │   └── CEM_agent.py       # CEM implementation
+          ├── train_main.py          # Training script
+          ├── test_main.py           # Testing & comparison script
+          ├── main.py                # Simple demo with RandomAgent, CEM_agent
+          │
+          ├── results/               # Trained models & curves
+          │   ├── TD3/
+          │   └── DDPG/
+          │
+          └── requirements.txt       # Dependencies
 ```
 ## PART 1
 A mountain car game to test if the installation is success.
