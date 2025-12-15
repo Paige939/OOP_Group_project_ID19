@@ -211,3 +211,56 @@ classDiagram
 
 ### 方法 3：GitHub
 - 直接把這個 .md 檔案 push 到 GitHub，GitHub 會自動渲染 Mermaid 圖表
+
+---
+
+## 簡化版 UML
+
+> 只顯示類別名稱和關係，適合快速說明架構
+
+```mermaid
+classDiagram
+    direction LR
+    
+    %% 核心繼承關係
+    Agent <|-- RandomAgent
+    Agent <|-- DDPG_Agent
+    Agent <|-- TD3_Agent
+    Agent <|-- CEM_Agent
+    Agent <|-- LQRAgent
+    Agent <|-- EnergyControlAgent
+    Agent <|-- ELAgent
+    
+    %% 組合關係
+    DDPG_Agent *-- ActorNetwork
+    DDPG_Agent *-- CriticNetwork
+    DDPG_Agent *-- ReplayBuffer
+    
+    TD3_Agent *-- ActorNetwork
+    TD3_Agent *-- TwinCriticNetwork
+    TD3_Agent *-- ReplayBuffer
+    
+    ELAgent *-- EnergyControlAgent
+    ELAgent *-- LQRAgent
+    
+    %% 聚合關係
+    Experiment o-- PendulumEnvWrapper
+    Experiment o-- Agent
+    
+    %% 標註
+    class Agent {
+        <<abstract>>
+    }
+```
+
+### 📌 關係圖例
+
+| 符號 | 名稱 | 說明 |
+|------|------|------|
+| `<\|--` | 繼承 | 子類別繼承父類別 |
+| `*--` | 組合 | 擁有，生命週期一致 |
+| `o--` | 聚合 | 使用，可獨立存在 |
+
+### 📌 一句話總結
+
+> **7 種 Agent 策略繼承自抽象類 `Agent`，透過多型實現策略模式，深度學習 Agent 組合神經網路組件。**
