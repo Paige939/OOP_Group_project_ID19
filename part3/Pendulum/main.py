@@ -7,7 +7,7 @@ if __name__ == "__main__":
     episode_len = 200
     n_episodes = 5
 
-    render_or_not = False
+    render_or_not = None
 
     # --- Random Agent ---
     #create environment for Random
@@ -81,26 +81,25 @@ if __name__ == "__main__":
     cem_env_wrapper.close()
     rand_env_wrapper.close() # close all environments
 
-    # --- Plot comparison (Bar Chart with Mean ± Std) ---
+    # --- Plot comparison (Simple Bar Chart) ---
     import numpy as np
     
     agents = ['Random', 'CEM', 'Energy', 'LQR', 'EL (Hybrid)']
     all_rewards = [rand_rewards, cem_rewards, energy_rewards, lqr_rewards, el_rewards]
     means = [np.mean(r) for r in all_rewards]
-    stds = [np.std(r) for r in all_rewards]
     
     plt.figure(figsize=(10, 6))
     colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
-    bars = plt.bar(agents, means, yerr=stds, capsize=5, color=colors, edgecolor='black', linewidth=1.2)
+    bars = plt.bar(agents, means, color=colors, edgecolor='black', linewidth=1.2)
     
     # Add value labels on bars
-    for bar, mean, std in zip(bars, means, stds):
-        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + std + 20, 
-                 f'{mean:.1f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
+    for bar, mean in zip(bars, means):
+        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 10, 
+                 f'{mean:.1f}', ha='center', va='bottom', fontsize=11, fontweight='bold')
     
     plt.xlabel("Agent", fontsize=12)
-    plt.ylabel("Total Reward", fontsize=12)
-    plt.title("Agent Comparison on Pendulum-v1 (Mean ± Std)", fontsize=14)
+    plt.ylabel("Average Reward", fontsize=12)
+    plt.title("Agent Comparison on Pendulum-v1", fontsize=14)
     plt.grid(axis='y', alpha=0.3)
     plt.tight_layout()
     plt.savefig("Comparison.png", dpi=150)
