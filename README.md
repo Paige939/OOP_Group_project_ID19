@@ -287,5 +287,5 @@ pip install pygame
 | **Member Name** | **Contribution** |
 |-----------------|------------------|
 | 謝佩均 (B123245004) | Part3 整體專案架構及其OOP實作、Cross Entropy Method實作 & CEM部分reflection, readme, demo slide |
-|  江威廷 (B123245021)   | part 3 DDPG & TD3 實作 & reflection paper 主要部分 & readme & demo slide，問題定義，UML圖表，整合不同Agent使用之manage.py |
+|  江威廷 (B123245021)   | part 3 DDPG & TD3 理解和實作 & reflection paper 主要部分 & readme & demo slide，問題定義，UML圖表，整合不同Agent使用之manage.py |
 |   黃柏薰  (B123040046)    |    Part3 lqr & energyControl & 組合Agent 實作 & demo slide&readme(Physics-based) |
