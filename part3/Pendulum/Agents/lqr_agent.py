@@ -48,7 +48,6 @@ class LQRAgent(Agent):
 
         # --- 4. 計算 K (Feedback Gain) ---
         # K = R^-1 * B^T * P
-        # 這行運算後，K 大約會是 [[46.9, 11.2]] (比原本的 40, 10 更精準)
         self.K = np.linalg.inv(R) @ B.T @ P
         
         # 為了除錯方便，可以印出來看看
@@ -78,3 +77,4 @@ class LQRAgent(Agent):
     def reset(self):
 
         pass
+
