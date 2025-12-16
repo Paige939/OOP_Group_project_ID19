@@ -75,20 +75,20 @@ After training, results are saved in `results/{AGENT}/`:
 | `training_curves.png` | **訓練曲線圖**：視覺化訓練過程（詳見下方說明）|
 | `training_data.npz` | **原始訓練數據**：包含每個 episode 的獎勵和損失值，可用於自行繪圖分析 |
 
-**訓練曲線圖解讀 (training_curves.png)**
+**DDPG & TD3 訓練曲線圖解釋 (training_curves.png)**
 
 訓練曲線包含 4 個子圖：
 
 **1. Training Rewards（左上）- 訓練獎勵**
-- **藍線**：每個 episode 的訓練獎勵
-- **紅線**：移動平均線（平滑後的趨勢）
+- **藍線**：每個 episode 的訓練的 Reward 值
+- **紅線**：移動平均線（平滑後的趨勢）          // 每 10 個取平均變成平滑曲線上的一個點的意思
 - **預期變化**：從約 -1500 開始，逐漸提升至 -200 ~ -400
 - **解讀**：數值越高（越接近 0）= 控制效果越好
 
 **2. Test Rewards（右上）- 測試獎勵**
 - **綠點**：評估階段的獎勵（不加探索噪聲）
 - 代表策略的真實效能，不受隨機探索影響
-- **預期變化**：比訓練獎勵更穩定
+- **預期變化**：隨著訓練越減越少，越接近 0 的意思
 
 **3. Critic Loss（左下）- Critic 損失**
 - 衡量 Critic 網路預測 Q 值的準確度
@@ -101,13 +101,13 @@ After training, results are saved in `results/{AGENT}/`:
 - **預期變化**：應該趨於穩定（不一定會下降）
 
 ### Performance Benchmarks
-
-| Agent | Typical Reward |
-|-------|---------------|
-| Random | -1200 ~ -1500 | 
-| DDPG (100 ep) | -300 ~ -600 |
-| TD3 (100 ep) | -200 ~ -400 | 
-| CEM (100 ep_len, 5 ep_num) | -200~-1500(Linear so Vary highly)    |
+Training: 100 episodes, Test: 5 episods
+| Agent  | Mean RewardMax         | Reward   | Min Reward  | Explanation                         |
+|:------ |:-----------------------:|---------:|------------:|:------------------------------------|
+| Random | -1188.38 ± 291.14       | -751.38  | -1651.14    | 完全隨機，無法控制                   |
+| DDPG   | -231.29 ± 64.79         | -125.10  | -328.81     | 有學習效果                           |
+| TD3    | -167.90 ± 56.37         | -117.80  | -245.44     | 最佳表現                             |
+| CEM    | -200 ~ -1500（Linear）  | —        | —           | Linear vary highly（變動很大）     |
 > **Note**: Closer to 0 = better performance
 
 **Random/ CEM/ LQR/ Energy/ Energy+LQR Comparison**
@@ -137,8 +137,9 @@ TD3 是 DDPG 的改進版本，解決了 Q 值**過度估計**的問題，有三
    - 減少 Q 值過度樂觀估計的問題
 
 2. **Delayed Policy Updates**（延遲策略更新）
-   - Critic 更新多次後，Actor 才更新一次（預設 2:1）
+   - Critic 更新多次後，Actor 才更新一次（預設 2:1）(d=2)
    - 讓 Critic 有足夠時間收斂，減少 Actor 更新的誤差
+-          // 這裡的參數像 d 都可以再調整看怎樣最好，不過這不是本專案的重點，故跳過不討論​
 
 3. **Target Policy Smoothing**（目標策略平滑）
    - 在目標動作上加入裁剪過的噪聲
@@ -234,7 +235,7 @@ python test_main.py --agent TD3 --model results/TD3/best_model.pth --episodes 10
 python test_main.py --agent DDPG --model results/DDPG/best_model.pth --episodes 10 --no-render
 
 # Compare all agents (Random vs DDPG vs TD3) - demonstrates Polymorphism
-python test_main.py --compare           # num_test_episodes = 5
+python test_main.py --compare           # num_test_episodes = 5                    compare 不會畫圖和產生 results 資料夾，這裡是運行(test)，只有在前面 train 的時候才會有
 ```
 
 ### 4. Other Demo
@@ -265,5 +266,5 @@ pip install pygame
 | **Member Name** | **Contribution** |
 |-----------------|------------------|
 | 謝佩均 (B123245004) | Part3 整體專案架構及其OOP實作、Cross Entropy Method實作 & CEM部分reflection, readme, demo slide |
-|  江威廷 (B123245021)   | part 3 DDPG & TD3 實作 & reflection paper 主要部分 & readme & demo slide，問題定義，UML圖表 |
+|  江威廷 (B123245021)   | part 3 DDPG & TD3 實作 & reflection paper 主要部分 & readme & demo slide，問題定義，UML圖表，整合不同Agent使用之manage.py |
 |   黃柏薰  (B123040046)    |    Part3 lqr & energyControl & 組合Agent 實作 & demo slide&readme(Physics-based) |
