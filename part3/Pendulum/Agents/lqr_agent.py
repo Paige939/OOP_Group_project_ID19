@@ -24,7 +24,7 @@ class LQRAgent(Agent):
         # d(theta_dot)/dt = (3g/2l) * theta
         a_21 = (3 * g) / (2 * l)  # 結果是 15.0
         A = np.array([[0, 1], 
-                      [15.0, 0]])
+                      [a_21, 0]])
         
         # B 矩陣 (控制輸入):
         # d(theta_dot)/dt ... + (3/ml^2) * u
@@ -76,4 +76,5 @@ class LQRAgent(Agent):
         return np.array([action], dtype=np.float32)
 
     def reset(self):
+
         pass
