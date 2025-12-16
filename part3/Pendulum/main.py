@@ -7,10 +7,11 @@ if __name__ == "__main__":
     episode_len = 200
     n_episodes = 5
 
+    render_or_not = False
 
     # --- Random Agent ---
     #create environment for Random
-    rand_env_wrapper = PendulumEnvWrapper(render_mode=None) 
+    rand_env_wrapper = PendulumEnvWrapper(render_mode=render_or_not) 
     random_agent = RandomAgent(action=rand_env_wrapper.action, max_action=rand_env_wrapper.max_action)
     exper_rand = Experiment(rand_env_wrapper, random_agent, episode_len)
     rand_rewards = []
@@ -23,21 +24,21 @@ if __name__ == "__main__":
 
     # --- CEM Agent ---
     # create environmemt for CEM
-    cem_env_wrapper = PendulumEnvWrapper(render_mode=None) 
+    cem_env_wrapper = PendulumEnvWrapper(render_mode=render_or_not) 
     cem_agent = CEM_Agent(action=cem_env_wrapper.action, max_action=cem_env_wrapper.max_action,
                           num_samples=300, elite_frac=0.2, save_path="CEM_weights.npy")
     exper_cem = Experiment(cem_env_wrapper, cem_agent, episode_len)
     cem_rewards = []
     print("=== CEM Agent ===")
     for ep in range(n_episodes):
-        reward = exper_cem.run_episode(render=False) #The render mode can be changed from "human", "rgb_array", None
+        reward = exper_cem.run_episode(render=False) #The render mode can be changed from render_or_not, "rgb_array", None
         cem_rewards.append(reward)
         print(f"Episode {ep+1} total reward: {reward:.2f}")
 
     
     # --- Energy Agent ---
     #create environment for EnergyControl
-    energy_env = PendulumEnvWrapper(render_mode=None)
+    energy_env = PendulumEnvWrapper(render_mode=render_or_not)
     energy_agent = EnergyControlAgent(action_dim=energy_env.action, max_action=energy_env.max_action)
     exper_energy = Experiment(energy_env, energy_agent, episode_len)
     energy_rewards = []
@@ -51,7 +52,7 @@ if __name__ == "__main__":
 
     # --- LQR Agent ---
     #create environment for LQR
-    lqr_env = PendulumEnvWrapper(render_mode=None)
+    lqr_env = PendulumEnvWrapper(render_mode=render_or_not)
     lqr_agent = LQRAgent(action_dim=lqr_env.action, max_action=lqr_env.max_action)
     exper_lqr = Experiment(lqr_env, lqr_agent, episode_len)
     lqr_rewards = []
@@ -64,7 +65,7 @@ if __name__ == "__main__":
 
     # --- Energy + LQR Agent ---
     #create environment for EL
-    el_env = PendulumEnvWrapper(render_mode=None)
+    el_env = PendulumEnvWrapper(render_mode=render_or_not)
     el_agent = ELAgent(action_dim=el_env.action, max_action=el_env.max_action)
     exper_el = Experiment(el_env, el_agent, episode_len)
     el_rewards = []
@@ -80,19 +81,28 @@ if __name__ == "__main__":
     cem_env_wrapper.close()
     rand_env_wrapper.close() # close all environments
 
-    # --- Plot comparison ---
-    #plt.figure(figsize=(8,5))
-    plt.figure(figsize=(10,6))
-    plt.plot(range(1,n_episodes+1), cem_rewards, 'o-', label='CEM Agent')
-    plt.plot(range(1,n_episodes+1), rand_rewards, 's-', label='Random Agent')
-    plt.plot(range(1,n_episodes+1), energy_rewards, 'x--', label='Energy Only')
-    plt.plot(range(1,n_episodes+1), lqr_rewards, 'v:', label='LQR Only')
-    plt.plot(range(1,n_episodes+1), el_rewards, '^-', label='EL Agent', linewidth=2.5)
-    plt.xlabel("Episode")
-    plt.ylabel("Total Reward")
-    plt.title(" Agent on Pendulum-v1")
-    plt.legend()
-    plt.grid(True)
-    plt.savefig("Comparison.png")
+    # --- Plot comparison (Bar Chart with Mean ± Std) ---
+    import numpy as np
+    
+    agents = ['Random', 'CEM', 'Energy', 'LQR', 'EL (Hybrid)']
+    all_rewards = [rand_rewards, cem_rewards, energy_rewards, lqr_rewards, el_rewards]
+    means = [np.mean(r) for r in all_rewards]
+    stds = [np.std(r) for r in all_rewards]
+    
+    plt.figure(figsize=(10, 6))
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
+    bars = plt.bar(agents, means, yerr=stds, capsize=5, color=colors, edgecolor='black', linewidth=1.2)
+    
+    # Add value labels on bars
+    for bar, mean, std in zip(bars, means, stds):
+        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + std + 20, 
+                 f'{mean:.1f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
+    
+    plt.xlabel("Agent", fontsize=12)
+    plt.ylabel("Total Reward", fontsize=12)
+    plt.title("Agent Comparison on Pendulum-v1 (Mean ± Std)", fontsize=14)
+    plt.grid(axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig("Comparison.png", dpi=150)
     plt.show()
     
