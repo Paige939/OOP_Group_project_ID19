@@ -131,8 +131,9 @@ Training: 300 episodes, Test: 5 episods          (效果更好)
 <img width="700" height="250" alt="image" src="https://github.com/user-attachments/assets/16d7bacf-d9db-4f7e-97ea-c0f396b3b9e9" />
 
 
-**Random/ CEM/ LQR/ Energy/ Energy+LQR Comparison(認為這樣圖表顯示較適合-威廷)**
-<img width="1500" height="900" alt="Comparison" src="https://github.com/user-attachments/assets/c55d5fbf-b181-4211-bae2-d9e2b3b73e2d" />
+**Random/ CEM/ LQR/ Energy/ Energy+LQR Comparison**  
+(認為這樣圖表顯示較適合-威廷)  
+<a href="https://github.com/user-attachments/assets/c55d5fbf-b181-4211-bae2-d9e2b3b73e2d" ><img src="https://github.com/user-attachments/assets/c55d5fbf-b181-4211-bae2-d9e2b3b73e2d" width="500"></a><br>
 
 # 演算法說明
 
