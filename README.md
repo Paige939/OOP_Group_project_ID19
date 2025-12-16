@@ -98,7 +98,14 @@ After training, results are saved in `results/{AGENT}/`:
 **4. Actor Loss（右下）- Actor 損失**
 - 衡量策略改進的方向
 - **注意**：負值是正常的（因為我們是最大化 Q 值）
-- **預期變化**：應該趨於穩定（不一定會下降）
+- **預期變化**：應該趨於穩定（不一定會下降）  
+   
+**Training results(300 episodes)**
+| DDPG | TD3 |
+|---|---|
+| <a href="https://github.com/user-attachments/assets/edcc523d-3918-4226-95b4-3273eda05db6"><img src="https://github.com/user-attachments/assets/edcc523d-3918-4226-95b4-3273eda05db6" width="260" alt="DDPG training curves"></a><br> | <a href="https://github.com/user-attachments/assets/b617d244-b15b-41a1-ac3a-2eeec705584a"><img src="https://github.com/user-attachments/assets/b617d244-b15b-41a1-ac3a-2eeec705584a" width="260" alt="TD3 training curves"></a><br> |
+
+
 
 ### Performance Benchmarks
 Training: 100 episodes, Test: 5 episods
@@ -109,6 +116,15 @@ Training: 100 episodes, Test: 5 episods
 | TD3    | -167.90 ± 56.37         | -117.80  | -245.44     | 最佳表現                             |
 | CEM    | -200 ~ -1500（Linear）  | —        | —           | Linear vary highly（變動很大）     |
 > **Note**: Closer to 0 = better performance
+
+Training: 300 episodes, Test: 5 episods          (效果更好)
+
+| Agent  | Mean Reward            | Max Reward | Min Reward |
+|--------|------------------------|-----------:|-----------:|
+| Random | -1291.07 ± 213.09      |   -1105.23 |   -1696.99 |
+| DDPG   |  -142.95 ± 45.20       |    -117.60 |    -233.27 |
+| TD3    |  -210.10 ± 132.94      |      -1.19 |    -360.63 |
+
 
 **Random/ CEM/ LQR/ Energy/ Energy+LQR Comparison**
 
