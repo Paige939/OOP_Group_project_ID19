@@ -96,7 +96,7 @@ def compare_agents():
     from Agents.random_agent import RandomAgent
     
     print("\n" + "="*70)
-    print("多智能體比較測試 - 展現 Polymorphism")
+    print("Compare RandomAgent, DDPG, TD3 - 展現 Polymorphism")
     print("="*70 + "\n")
     
     env_wrapper = PendulumEnvWrapper(render_mode=None)
